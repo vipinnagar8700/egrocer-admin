@@ -1,0 +1,90 @@
+.master {
+    background-image:
+        /* top, transparent red */
+        linear-gradient(
+            rgba(0,0,0,.5),
+            rgba(0,0,0,.5)
+        ),
+        /* your image */
+        url(../../images/login-bg.jpg);
+    background-size: cover;
+    background-position: top;
+    min-height: 100vh;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-pack: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.header {
+    background-color: #37a279;
+    padding: 30px 30px 40px;
+    border-radius: 3px 3px 0 0;
+    text-align: center;
+}
+.step__item.active .step__icon, .step__item.active ~ .step__divider, .step__item.active ~ .step__item .step__icon {
+    background-color: #149c5c;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+.step__item.active .step__icon:hover, .step__item.active ~ .step__item .step__icon:hover {
+    background-color: #146c43;
+}
+.list .list__item.list__title.success span {
+    color: #37a279;
+}
+.list .list__item.list__title.success .fa:before {
+    color: #37a279;
+}
+
+.button, .button--light {
+    color: #fff;
+    background-color: #37a279;
+}
+.button:hover {
+    color: #fff;
+    /*-webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 19%), 0 6px 3px rgb(0 0 0 / 23%);
+    box-shadow: 0 10px 10px rgb(0 0 0 / 19%), 0 6px 3px rgb(0 0 0 / 23%);*/
+    background-color: #146c43;
+}
+.button--light:hover {
+    color: #fff;
+    background-color: #146c43;
+}
+
+/*sup{
+    border-radius: 50%;
+}
+a {
+    color: #fff;
+    background-color: #37a279;
+}
+a:hover {
+    color: #fff;
+    background-color: #146c43;
+}*/
+
+select option {
+    background-color: #37a279;
+    color: #ffffff;
+}
+input[type="radio"] {
+    accent-color: #37a279;
+}
+input:focus {
+    background: #daf7ea;
+}
+
+.block input[type='radio']+label {
+    background: #146c43;
+}
+.block input[type='radio']+label:hover {
+    background: #0b452a;
+}
+.block input[type='radio']+label:checked {
+    background: #37a279;
+}

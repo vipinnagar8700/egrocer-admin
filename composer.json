@@ -1,0 +1,81 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "brotzka/laravel-dotenv-editor": "^2.1",
+        "composer/composer": "^2.5",
+        "doctrine/dbal": "^3.6",
+        "google/apiclient": "^2.15.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "kreait/firebase-php": "^5.8",
+        "laravel/cashier": "*",
+        "laravel/framework": "^8.75",
+        "laravel/passport": "^10.4",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5",
+        "midtrans/midtrans-php": "^2.5",
+        "mpdf/mpdf": "^8.1",
+        "pcinaglia/laraupdater": "1.0.3.4",
+        "rap2hpoutre/laravel-log-viewer": "^2.2",
+        "razorpay/razorpay": "2.*",
+        "spatie/laravel-permission": "^3.0"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
+        "phpunit/phpunit": "^9.5.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "app/Helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        },
+        "google/apiclient-services": [
+            "FirebaseCloudMessaging"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

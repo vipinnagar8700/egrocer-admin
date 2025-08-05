@@ -1,0 +1,51 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wrteam.egrocer",
+      "sha256_cert_fingerprints": [
+        "3D:F5:75:51:13:59:27:02:7C:78:00:F1:DC:0E:C2:E3:5A:01:F6:7E:21:6E:68:8A:56:2B:D8:92:C2:0E:FC:DF",
+        "C4:C9:80:64:DF:3F:89:3A:F9:76:A4:0D:0D:96:2A:C7:6B:94:2A:CE:BC:74:FD:D0:F2:DB:CA:0F:59:9B:C2:00"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wrteam.egrocer",
+      "sha256_cert_fingerprints": [
+        "A9:1B:DA:C5:56:56:FA:58:21:2C:E2:03:85:CA:43:D1:63:C5:14:14:D8:59:B7:0C:9C:CB:94:91:3B:F1:1B:58"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wrteam.egrocer",
+      "sha256_cert_fingerprints": [
+        "C4:C9:80:64:DF:3F:89:3A:F9:76:A4:0D:0D:96:2A:C7:6B:94:2A:CE:BC:74:FD:D0:F2:DB:CA:0F:59:9B:C2:00"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wrteam.egrocer",
+      "sha256_cert_fingerprints": [
+        "47:1a:c5:7e:8e:32:45:76:a6:cf:e7:f8:a7:c9:4e:3e:fe:60:13:08:fc:ab:1b:81:76:d4:e5:3e:bd:2b:98:17"
+      ]
+    }
+  }
+]

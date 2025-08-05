@@ -1,0 +1,30 @@
+.theme-switcher-wrap {
+    with:100%;
+    text-align:right;
+
+    .theme-switcher {
+        display: inline-block;
+        cursore: pointer;
+
+        .switch-path {
+            background-color: #ccc;
+
+            .switch-handle {
+                background-color: #999;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                transition: all 0.3s ease-in-out;
+            }
+        } &.active {
+            .switch-path {
+                background-color: #555;
+            }
+            .switch-handle {
+              background-color: #7bbb5e;
+              transform: translateX(20px);
+            }
+        }
+
+    }
+}

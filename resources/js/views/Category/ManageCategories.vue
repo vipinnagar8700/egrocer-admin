@@ -1,0 +1,273 @@
+<template>
+
+    <div>
+
+        <div class="page-heading">
+            <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>{{ __('manage_categories') }}</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><router-link to="/dashboard">{{ __('dashboard') }}</router-link></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('manage_categories') }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+            <div class="row">
+                <div class="col-12 col-md-12 order-md-1 order-last">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>{{ __('categories') }}</h4>
+                            <span class="pull-right">
+                                <button class="btn btn-primary"  @click="create_new=true" v-b-tooltip.hover :title="__('add_new_category')" v-if="$can('category_create')">{{ __('add_category') }}</button>
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <b-row class="mb-2">
+                                <b-col md="3" offset-md="8">
+                                    <h6 class="box-title">{{ __('search') }}</h6>
+                                    <b-form-input
+                                        id="filter-input"
+                                        v-model="filter"
+                                        type="search"
+                                        :placeholder="__('search')"
+                                    ></b-form-input>
+                                </b-col>
+                                <b-col md="1" class="text-center">
+                                    <button class="btn btn-primary btn_refresh" v-b-tooltip.hover :title="__('refresh')" @click="getCategories()">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </button>
+                                </b-col>
+
+                            </b-row>
+                            <b-table
+                                :items="categories"
+                                :fields="fields"
+                               
+                                :filter="filter"
+                                :filter-included-fields="filterOn"
+                                :sort-by.sync="sortBy"
+                                :sort-desc.sync="sortDesc"
+                                :sort-direction="sortDirection"
+                                :bordered="true"
+                                :busy="isLoading"
+                                stacked="md"
+                                show-empty
+                                small>
+
+                                <template #table-busy>
+                                    <div class="text-center text-black my-2">
+                                        <b-spinner class="align-middle"></b-spinner>
+                                        <strong>{{ __('loading') }}...</strong>
+                                    </div>
+                                </template>
+
+                                <template #cell(image)="row">
+                                    <img :src="row.item.image_url" height="50" />
+                                </template>
+                                <template #cell(status)="row">
+                                    <span class='badge bg-success' v-if="row.item.status == 1">Activated</span>
+                                    <span class='badge bg-danger' v-if="row.item.status == 0">Deactivated</span>
+                                </template>
+                                <template #cell(actions)="row">
+                                    <button class="btn btn-sm btn-primary" @click="edit_record = row.item" v-if="$can('category_update')" v-b-tooltip.hover :title="__('edit')"><i class="fa fa-pencil-alt"></i></button>
+                                    <button class="btn btn-sm btn-danger" @click="deleteCategory(row.index,row.item.id)" v-if="$can('category_delete')" v-b-tooltip.hover :title="__('delete')"><i class="fa fa-trash"></i></button>
+                                </template>
+
+                            </b-table>
+                            <b-row>
+                            <b-col  md="2" class="my-1">
+                                <label>
+                                    <b-form-group
+                                        :label="__('per_page')"
+                                        label-for="per-page-select"
+                                        label-align-sm="right"
+                                        label-size="sm"
+                                        class="mb-0">
+
+                                        <b-form-select
+                                            id="per-page-select"
+                                            v-model="perPage"
+                                            :options="pageOptions"
+                                            size="sm"
+                                            class="form-control form-select"
+                                        ></b-form-select>
+                                    </b-form-group>
+                                </label>
+                            </b-col>
+                            <b-col  md="4" class="my-1" offset-md="6">
+                                <label>{{__('total_records')}} :- {{ totalRows }} </label>
+                                <b-pagination
+                                    v-model="currentPage"
+                                    :total-rows="totalRows"
+                                    :per-page="perPage"
+                                    align="fill"
+                                    size="sm"
+                                    class="my-0"
+                                    @change="getCategories"
+                                ></b-pagination>
+                            </b-col>
+                            </b-row>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add / Edit -->
+        <app-edit-record
+            v-if="create_new || edit_record"
+            :record="edit_record"
+            @modalClose="hideModal()"
+        ></app-edit-record> 
+    </div>
+
+</template>
+<script>
+
+import EditRecord from './Edit.vue';
+export default {
+    components: {
+        'app-edit-record' : EditRecord,
+    },
+    data: function() {
+        return {
+            fields: [
+                { key: 'id', label: __('id'), class: 'text-center', sortable: true, sortDirection: 'asc' },
+                { key: 'parent_id', label: __('parent_id'), class: 'text-center', sortable: true, sortDirection: 'desc' },
+                { key: 'name', label: __('name'), class: 'text-center', sortable: true },
+                { key: 'subtitle', label: __('subtitle'), class: 'text-center', sortable: true },
+                { key: 'image', label: __('image'),  class: 'text-center' },
+                { key: 'status', label: __('status'),  class: 'text-center' },
+                { key: 'actions', label: __('actions'), class: 'text-center'}
+            ],
+            totalRows: 1,
+            currentPage: 1,
+            perPage: this.$perPage,
+            pageOptions: this.$pageOptions,
+            sortBy: 'id',
+            sortDesc: true,
+            sortDirection: 'asc',
+            filter: null,
+            filterOn: [],
+            page: 1,
+
+            categories: [],
+            isLoading: false,
+            sectionStyle : 'style_1',
+            max_visible_categories : 12,
+            max_col_in_single_row : 3,
+            create_new : null,
+            edit_record : null,
+            settingModalShow:false
+        }
+    },
+    computed: {
+        sortOptions() {
+            // Create an options list from our fields
+            return this.fields
+                .filter(f => f.sortable)
+                .map(f => {
+                    return { text: f.label, value: f.key }
+                })
+        },
+        filteredCategories: function() {
+            const query = this.filter ? this.filter.toLowerCase() : '';
+            return this.categories.filter(category => {
+            return (
+                category.name.toLowerCase().includes(query) ||
+                category.subtitle.toLowerCase().includes(query)  // Add more fields as needed for search
+            );
+            });
+        },
+        
+    },
+    mounted() {
+       
+    },
+    watch: {
+        $route(to, from) {
+            this.showCreateModal();
+        },
+        currentPage(newPage) {
+            this.getCategories();
+        },
+        perPage(newPerPage) {
+            this.getCategories();
+        }
+    },
+    created: function() {
+        this.showCreateModal();
+        this.$eventBus.$on('categorySaved', (message) => {
+            this.showMessage("success", message);
+            this.getCategories();
+            this.create_new = null;
+        });
+        this.getCategories();
+    },
+    methods: {
+
+        getCategories(){
+
+            this.isLoading = true
+            const params = {
+                offset: this.currentPage,
+                limit: this.perPage,
+                filter: this.filter
+            };
+            axios.get(this.$apiUrl + '/categories', { params })
+                .then((response) => {
+                    this.isLoading = false
+                    let data = response.data;
+                    this.categories = data.data
+                    this.totalRows = data.total
+                });
+        },
+        
+
+        deleteCategory(index, id){
+            this.$swal.fire({
+                title: "Are you Sure?",
+                text: "You want be able to revert this",
+                confirmButtonText: "Yes, Sure",  
+                cancelButtonText: "Cancel",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#37a279',
+                cancelButtonColor: '#d33',
+            }).then(result => {
+
+                if (result.value) {
+                    this.isLoading = true
+                    let postData = {
+                        id : id
+                    }
+                    axios.post(this.$apiUrl + '/categories/delete',postData)
+                        .then((response) => {
+                            this.isLoading = false
+                            let data = response.data;
+                            this.categories.splice(index, 1)
+                            this.showMessage('success', data.message);
+                        });
+                }
+            });
+        },
+        showCreateModal(){
+            let create = this.$route.params.create;
+            if(create){
+                this.create_new = true;
+            }
+        },
+        hideModal() {
+            this.create_new = false
+            this.edit_record = false
+            this.$router.push({path: '/manage_categories'});
+        },
+    }
+};
+</script>
